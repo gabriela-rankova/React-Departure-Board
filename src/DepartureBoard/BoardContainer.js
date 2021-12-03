@@ -2,9 +2,10 @@ import { Card, CardBody, CardTitle } from "reactstrap";
 import useEventSource from "../useEventSource";
 import Board from "./Board";
 import Clock from "./Clock";
+import StationDetails from "./StationDetails";
 
-const API_URL =
-  "https://api-v3.mbta.com/predictions?filter[stop]=place-sstat&sort=departure_time&filter[route]=Red,CR-Fairmount,CR-Worcester,CR-Needham&direction_id=0&include=route,vehicle";
+const station = "place-sstat";
+const API_URL = `https://api-v3.mbta.com/predictions?filter[stop]=${station}&sort=departure_time&filter[route]=Red,CR-Fairmount,CR-Worcester,CR-Needham&direction_id=0&include=route,vehicle`;
 
 const getCurrentDate = () => {
   const date = new Date();
@@ -28,6 +29,9 @@ const BoardContainer = () => {
           <div className="text-start">
             <span>Date:</span>
             <p> {getCurrentDate()}</p>
+          </div>
+          <div>
+            <StationDetails stationId={station} />
           </div>
           <div className="text-end">
             <span>Current time: </span>
