@@ -26,7 +26,6 @@ const useEventSource = (url, options) => {
     // if the API server determines that it is more
     // efficient than sending individual resource changes.
     eventSource.onreset = (e) => {
-      console.log(e);
       const items = getItems(e);
       if (initial.current) {
         initial.current = false;

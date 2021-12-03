@@ -11,24 +11,24 @@ const Board = ({ data }) => {
   );
 
   const routes = getDataByType("route");
-  return (
-    data && (
-      <Table responsive bordered hover>
-        <thead>
-          <tr>
-            <th>Line</th>
-            <th>Arrival</th>
-            <th>Departure</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((departure) => {
-            return <BoardItem routes={routes} item={departure} />;
-          })}
-        </tbody>
-      </Table>
-    )
+  return data && data.length > 0 ? (
+    <Table responsive bordered hover>
+      <thead>
+        <tr>
+          <th>Line</th>
+          <th>Arrival</th>
+          <th>Departure</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((departure) => {
+          return <BoardItem routes={routes} item={departure} />;
+        })}
+      </tbody>
+    </Table>
+  ) : (
+    <h3 className="text-center">No departures available</h3>
   );
 };
 
