@@ -9,7 +9,7 @@ const API_URL =
 const BoardContainer = () => {
   const departureData = useEventSource(API_URL, {
     xhrHeaders: {
-      "x-api-key": "3c1213d8e464456088bbc89daee4ef20",
+      "x-api-key": `${process.env.REACT_APP_API_KEY}`,
       Accept: "text/event-stream",
     },
     getArgs: false,
