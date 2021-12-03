@@ -1,29 +1,19 @@
+import { useCallback } from "react";
 import { Table } from "reactstrap";
-
-const getTimeFromDate = (isoDate) => {
-  if (!isoDate) return "N/A";
-
-  const date = new Date(isoDate);
-  return date.getHours() + ":" + String(date.getMinutes()).padStart(2, "0");
-};
+import BoardItem from "./BoardItem";
 
 const Board = ({ data }) => {
-  const getRelationShipData = (item, relationType = false) => {
-    return (
-      item.relationships &&
-      Object.keys(item.relationships).map((type) => {
-        return data.find((value) => {
-          return relationType
-            ? value.type === type && relationType === value.type
-            : value.type === type;
-        });
-      })
-    );
-  };
+  const getDataByType = useCallback(
+    (relationType) => {
+      return data.filter((elem) => elem.type === relationType);
+    },
+    [data]
+  );
 
+  const routes = getDataByType("route");
   return (
     data && (
-      <Table responsive>
+      <Table responsive bordered hover>
         <thead>
           <tr>
             <th>Line</th>
@@ -33,20 +23,8 @@ const Board = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((d) => {
-            const relationshipData = getRelationShipData(d);
-            console.log(relationshipData);
-
-            return (
-              d.type === "prediction" && (
-                <tr key={d.id}>
-                  {/* <td>{getRouteName(d.</td> */}
-                  <td>{getTimeFromDate(d.attributes.arrival_time)}</td>
-                  <td>{getTimeFromDate(d.attributes.departure_time)}</td>
-                  <td>{d.attributes.status}</td>
-                </tr>
-              )
-            );
+          {data.map((departure) => {
+            return <BoardItem routes={routes} item={departure} />;
           })}
         </tbody>
       </Table>

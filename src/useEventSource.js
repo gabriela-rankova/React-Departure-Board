@@ -59,7 +59,10 @@ const useEventSource = (url, options) => {
     };
     eventSource.onremove = (e) => {
       const item = getItems(e);
-      const restItems = currentData.current.filter((obj) => item.id !== obj.id);
+      const restItems = currentData.current.filter((obj) => {
+        console.log(item.id !== obj.id, item.id, obj.id);
+        return item.id !== obj.id;
+      });
       updateData(restItems);
     };
     return () => {
