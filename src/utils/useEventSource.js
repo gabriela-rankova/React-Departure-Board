@@ -5,7 +5,10 @@ const getItems = (e) => {
   return typeof e.data !== "object" && JSON.parse(e.data);
 };
 const sortItems = (items) => {
-  return items.sort(
+  const filtered = items.filter(
+    (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+  );
+  return filtered.sort(
     (a, b) =>
       new Date(a.attributes.departure_time) -
       new Date(b.attributes.departure_time)
@@ -32,14 +35,26 @@ const useEventSource = (url, options) => {
     eventSource.onreset = (e) => {
       const items = getItems(e);
       console.log("reset");
-      updateData([...items]);
+      updateData([...sortItems(items)]);
     };
 
     // when new resources are added, and it contains a single object
+    // sometimes some items already exists
     eventSource.onadd = (e) => {
       console.log("add");
-      const items = getItems(e);
-      const newItems = sortItems([...currentData.current, items]);
+      const item = getItems(e);
+
+      const itemIndex = currentData.current.findIndex((obj) => {
+        return obj.id === item.id;
+      });
+
+      if (itemIndex) {
+        currentData.current[itemIndex] = item;
+      } else {
+        currentData.current.push(item);
+      }
+
+      const newItems = sortItems([...currentData.current]);
       updateData(newItems);
     };
     // when existing resources are updated, and it contains a single objwct
@@ -49,6 +64,7 @@ const useEventSource = (url, options) => {
       const itemIndex = currentData.current.findIndex((obj) => {
         return obj.id === item.id;
       });
+
       currentData.current[itemIndex] = item;
       updateData([...sortItems(currentData.current)]);
     };
