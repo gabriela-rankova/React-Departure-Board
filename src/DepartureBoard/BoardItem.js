@@ -9,23 +9,32 @@ const getTimeFromDate = (isoDate) => {
   );
 };
 
-const BoardItem = ({ item, routes = [] }) => {
+const BoardItem = ({ item, routes = [], vehicles = [], trips = [] }) => {
   const routeData = routes.find(
     (route) => route.id === item.relationships.route?.data.id
   );
+  const vehicleData = vehicles.find(
+    (vehicle) => vehicle.id === item.relationships?.vehicle?.data?.id
+  );
+  const tripData = trips.find(
+    (trip) => trip.id === item.relationships?.trip?.data?.id
+  );
 
   return (
-    item.type === "prediction" && (
-      <tr
-        key={item.id}
-        style={{ borderLeft: `5px solid #${routeData.attributes.color}` }}
-      >
-        <td>{routeData.attributes.long_name}</td>
-        <td>{getTimeFromDate(item.attributes.arrival_time)}</td>
-        <td>{getTimeFromDate(item.attributes.departure_time)}</td>
-        <td>{item.attributes.status}</td>
-      </tr>
-    )
+    <tr style={{ borderLeft: `5px solid #${routeData.attributes.color}` }}>
+      <td>
+        {routeData.attributes.short_name || routeData.attributes.long_name}
+      </td>
+      <td>{getTimeFromDate(item.attributes.arrival_time)}</td>
+      <td>{getTimeFromDate(item.attributes.departure_time)}</td>
+      <td>{tripData?.attributes.headsign}</td>
+      <td>
+        {vehicleData && vehicleData.attributes
+          ? vehicleData.attributes.label
+          : ""}
+      </td>
+      <td>{item.attributes.status}</td>
+    </tr>
   );
 };
 

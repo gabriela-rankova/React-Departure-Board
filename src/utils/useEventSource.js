@@ -21,12 +21,11 @@ const useEventSource = (url, options) => {
       console.log("EventSource error: ", err);
     };
 
-    //It’s always the first event in the stream,
-    // but it can also be sent during the connection
-    // if the API server determines that it is more
-    // efficient than sending individual resource changes.
+    // It’s always the first event in the stream, but it can also be sent during the connection
+    // if the API server determines that it is more efficient than sending individual resource changes.
     eventSource.onreset = (e) => {
       const items = getItems(e);
+      console.log("reset");
       if (initial.current) {
         initial.current = false;
 
@@ -36,33 +35,37 @@ const useEventSource = (url, options) => {
           const itemIndex = currentData.current.find((obj) => {
             return obj.id === item.id;
           });
-          currentData.current[itemIndex] = item;
+          return (currentData.current[itemIndex] = item);
         });
 
         updateData(currentData.current);
       }
     };
 
+    // when new resources are added, and it contains a single object
     eventSource.onadd = (e) => {
+      console.log("add");
       const items = getItems(e);
       updateData([...currentData.current, items]);
     };
+    // when existing resources are updated, and it contains a single objwct
     eventSource.onupdate = (e) => {
+      console.log("update");
       const item = getItems(e);
-
       const itemIndex = currentData.current.find((obj) => {
         return obj.id === item.id;
       });
       currentData.current[itemIndex] = item;
-      updateData(currentData.current);
+      updateData([...currentData.current]);
     };
+    // when a resource is removed, and it contains a single object
     eventSource.onremove = (e) => {
+      console.log("remove");
       const item = getItems(e);
       const restItems = currentData.current.filter((obj) => {
-        console.log(item.id !== obj.id, item.id, obj.id);
         return item.id !== obj.id;
       });
-      updateData(restItems);
+      updateData([...restItems]);
     };
     return () => {
       eventSource.close();

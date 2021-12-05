@@ -11,6 +11,9 @@ const Board = ({ data }) => {
   );
 
   const routes = getDataByType("route");
+  const vehicles = getDataByType("vehicle");
+  const trips = getDataByType("trip");
+
   return data && data.length > 0 ? (
     <Table responsive bordered hover>
       <thead>
@@ -18,12 +21,24 @@ const Board = ({ data }) => {
           <th>Line</th>
           <th>Arrival</th>
           <th>Departure</th>
+          <th>Destination</th>
+          <th>Train</th>
           <th>Status</th>
         </tr>
       </thead>
       <tbody>
         {data.map((departure) => {
-          return <BoardItem routes={routes} item={departure} />;
+          return (
+            departure.type === "prediction" && (
+              <BoardItem
+                key={departure.id}
+                routes={routes}
+                vehicles={vehicles}
+                trips={trips}
+                item={departure}
+              />
+            )
+          );
         })}
       </tbody>
     </Table>

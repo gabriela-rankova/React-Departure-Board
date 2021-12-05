@@ -1,15 +1,16 @@
 import { Card, CardBody, CardTitle } from "reactstrap";
-import useEventSource from "../useEventSource";
+import useEventSource from "../utils/useEventSource";
 import Board from "./Board";
 import Clock from "./Clock";
 import StationDetails from "./StationDetails";
 
 const station = "place-sstat";
-const API_URL = `https://api-v3.mbta.com/predictions?filter[stop]=${station}&sort=departure_time&filter[route]=Red,CR-Fairmount,CR-Worcester,CR-Needham&direction_id=0&include=route,vehicle`;
+
+const API_URL = `https://api-v3.mbta.com/predictions?filter[stop]=${station}&sort=departure_time&direction_id=0&include=route,vehicle,trip`;
 
 const getCurrentDate = () => {
   const date = new Date();
-  return `${date.getDay()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 };
 
 const BoardContainer = () => {
