@@ -1,5 +1,5 @@
 const getTimeFromDate = (isoDate) => {
-  if (!isoDate) return "N/A";
+  if (!isoDate) return "-";
 
   const date = new Date(isoDate);
   return (

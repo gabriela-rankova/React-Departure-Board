@@ -1,4 +1,4 @@
-import BoardContainer from "./DepartureBoard/BoardContainer";
+import BoardContainer from "./components/DepartureBoard/BoardContainer";
 
 function App() {
   return <BoardContainer />;

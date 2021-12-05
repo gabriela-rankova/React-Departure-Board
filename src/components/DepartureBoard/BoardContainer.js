@@ -1,8 +1,9 @@
 import { Card, CardBody, CardTitle } from "reactstrap";
-import useEventSource from "../utils/useEventSource";
+import useEventSource from "../../utils/useEventSource";
 import Board from "./Board";
 import Clock from "./Clock";
 import StationDetails from "./StationDetails";
+import "../../styles/DepartureBoard.css";
 
 const station = "place-sstat";
 
@@ -23,7 +24,7 @@ const BoardContainer = () => {
   });
 
   return (
-    <Card className="m-4">
+    <Card className="board-container">
       <CardTitle className="p-3">
         <h1 className="text-center">Departure</h1>
         <div className="board-container-title">
